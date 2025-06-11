@@ -5,6 +5,7 @@ import { NextRequest, NextResponse } from "next/server";
 export async function POST(req: NextRequest) {
   await connectToDB();
   const body = await req.json();
+  console.log("📦 Gelen veri:", body); // 👈 bunu yazdır
 
   try {
     const newPost = await Post.create(body);
