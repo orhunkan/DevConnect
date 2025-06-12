@@ -8,7 +8,8 @@ import rehypeRaw from "rehype-raw";
 import Link from "next/link";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
-import DeleteButton from "@/components/DeleteButton"; // ekle
+import DeleteButton from "@/components/DeleteButton";
+import LikeButton from "@/components/LikeButton";
 
 interface PageProps {
   params: {
@@ -23,37 +24,48 @@ export default async function BlogDetailPage({ params }: PageProps) {
 
   const session = await getServerSession(authOptions);
   const isOwner = session?.user?.email === post.authorEmail;
-
+  const userEmail = session?.user?.email || "";
+  const isLikedByMe = post.likes?.includes(userEmail) || false;
   return (
-    <div className="max-w-2xl mx-auto py-10 px-4 text-white">
-      <h1 className="text-3xl font-bold mb-4">{post.title}</h1>
+    <div className="max-w-6xl mx-auto px-4 py-16">
+      <div className="bg-zinc-200 p-12 rounded-2xl shadow-xl">
+        <h1 className="text-5xl font-bold mb-8 text-zinc-900">
+          {post.title}
+        </h1>
 
-      <div className="text-sm text-zinc-500 mb-2">
-        {new Date(post.createdAt).toLocaleDateString("tr-TR")} -{" "}
-        {post.tags.join(", ")}
-      </div>
+        <p className="text-base text-zinc-600 mb-6">
+          {new Date(post.createdAt).toLocaleDateString("tr-TR")} – {post.tags.join(", ")}
+        </p>
 
-      <div className="prose prose-invert max-w-none">
-        <ReactMarkdown remarkPlugins={[remarkGfm]} rehypePlugins={[rehypeRaw]}>
-          {post.content}
-        </ReactMarkdown>
-      </div>
-
-          
-      {isOwner && (
-        <div className="flex gap-4 mt-6">
-          <Link
-            href={`/blog/${params.id}/edit`}
-            className="text-sm text-blue-400 hover:underline"
-          >
-            ✏️ Yazıyı Düzenle
-          </Link>
-
-          {/* Silme Butonu */}
-          <DeleteButton id={params.id} />
+        <div className="prose prose-lg prose-zinc max-w-none mb-10">
+          <ReactMarkdown remarkPlugins={[remarkGfm]} rehypePlugins={[rehypeRaw]}>
+            {post.content}
+          </ReactMarkdown>
         </div>
-      )}
 
+        {session?.user && (
+          <div className="mb-8">
+            <LikeButton
+              postId={params.id}
+              initialLikes={post.likes?.length || 0}
+              likedByMe={isLikedByMe}
+            />
+          </div>
+        )}
+
+        {isOwner && (
+          <div className="flex gap-6 text-base">
+            <Link
+              href={`/blog/${params.id}/edit`}
+              className="text-blue-600 hover:underline"
+            >
+              ✏️ Yazıyı Düzenle
+            </Link>
+            <DeleteButton id={params.id} />
+          </div>
+        )}
+      </div>
     </div>
   );
+
 }

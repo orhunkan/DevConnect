@@ -4,6 +4,7 @@ export interface BlogPost {
   title: string;
   content: string;
   tags: string[];
+  likes?: string[]
   createdAt: Date;
   updatedAt: Date;
 }

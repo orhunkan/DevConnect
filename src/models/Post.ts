@@ -1,16 +1,19 @@
-import { Schema, models, model } from "mongoose";
-import type { BlogPost } from "@/types/post";
+import { Schema, model, models, deleteModel } from "mongoose";
 
-const PostSchema = new Schema<BlogPost>(
-  {
-    authorEmail: { type: String, required: true },
-    title: { type: String, required: true },
-    content: { type: String, required: true },
-    tags: [{ type: String, required: true }],
+if (models.Post) {
+  deleteModel("Post");
+}
+
+const PostSchema = new Schema({
+  authorEmail: { type: String, required: true },
+  title: { type: String, required: true },
+  content: { type: String, required: true },
+  tags: [{ type: String, required: true }],
+  likes: {
+    type: [String],
+    default: [],
   },
-  { timestamps: true }
-);
+}, { timestamps: true });
 
-
-const Post = models.Post || model<BlogPost>("Post", PostSchema);
+const Post = model("Post", PostSchema);
 export default Post;
