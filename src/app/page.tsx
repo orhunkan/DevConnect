@@ -26,7 +26,8 @@ export default async function Home() {
             tags={post.tags}
             createdAt={post.createdAt?.toString() ?? ""}
             likes={post.likes?.length || 0}
-            comments={0} // yorum sistemi gelince burayı güncelleriz
+            comments={0}
+            authorEmail={post.authorEmail}
           />
         ))}
       </div>

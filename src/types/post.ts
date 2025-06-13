@@ -1,5 +1,7 @@
+import { Types } from "mongoose";
+
 export interface BlogPost {
-  _id?:string;// made change here
+  _id: Types.ObjectId | string;
   authorEmail: string;
   title: string;
   content: string;
