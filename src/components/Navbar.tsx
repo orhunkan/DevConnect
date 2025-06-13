@@ -23,6 +23,7 @@ export default function Navbar() {
           {/* <Link href="/" className="hover:underline">Anasayfa</Link> */}
           <Link href="/blog/new" className="hover:underline">Create Post </Link>
           <Link href="/blog/" className="hover:underline">Posts</Link>
+          <Link href="" className="hover:underline">Explore</Link>
         </nav>
 
         {/* Sağ: Kullanıcı bilgisi */}
