@@ -11,7 +11,7 @@ export default async function Home() {
   return (
     <div className="flex-1 flex justify-center">
       <div className="w-full max-w-2xl h-[80vh] overflow-y-auto bg-blue-50 border border-blue-200 rounded-xl shadow-md p-6 space-y-4">
-        <h1 className="text-2xl font-bold text-blue-900 mb-2">Son Paylaşılan Postlar</h1>
+        <h1 className="text-2xl font-bold text-blue-900 mb-2 text-center">Latest Posts</h1>
 
         {posts.length === 0 && (
           <p className="text-gray-500 text-sm">Henüz hiç post yok.</p>

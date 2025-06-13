@@ -21,7 +21,7 @@ export default function Navbar() {
         {/* Orta: Menü Linkleri */}
         <nav className="flex gap-6 items-center justify-center">
           {/* <Link href="/" className="hover:underline">Anasayfa</Link> */}
-          <Link href="/blog/new" className="hover:underline">Post Oluştur</Link>
+          <Link href="/blog/new" className="hover:underline">Create Post </Link>
           <Link href="/blog/" className="hover:underline">Posts</Link>
         </nav>
 

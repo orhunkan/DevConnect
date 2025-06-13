@@ -11,7 +11,7 @@ export default async function BlogListPage() {
   const posts: BlogPost[] = JSON.parse(JSON.stringify(rawPosts)); // serialize et
 
   return (
-    <div className="min-h-screen bg-gray-50 py-10 px-4">
+    <div className="w-full max-w-2xl h-[80vh] overflow-y-auto bg-blue-50 border border-blue-200 rounded-xl shadow-md p-6 space-y-4 ">
       <div className="max-w-4xl mx-auto">
         <h1 className="text-3xl font-bold text-center text-blue-800 mb-8">
           All Blog Posts
