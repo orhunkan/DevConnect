@@ -2,33 +2,59 @@ import { connectToDB } from "@/lib/mongodb";
 import Post from "@/models/Post";
 import { NextRequest, NextResponse } from "next/server";
 
-// GÜNCELLEME (PATCH)
-export async function PATCH(req: NextRequest, { params }: { params: { id: string } }) {
+async function updatePost(
+  req: NextRequest,
+  params: { id: string }
+): Promise<NextResponse> {
   await connectToDB();
-  const body = await req.json();
+
+  const { title, content, tags } = await req.json();
 
   try {
     const updated = await Post.findByIdAndUpdate(
       params.id,
       {
-        $set: {
-          title: body.title,
-          content: body.content,
-          tags: body.tags,
-        },
+        title,
+        content,
+        tags,
+        updatedAt: new Date(),
       },
       { new: true }
     );
 
+    if (!updated) {
+      return NextResponse.json({ message: "Post not found" }, { status: 404 });
+    }
+
     return NextResponse.json(updated, { status: 200 });
   } catch (err) {
     console.error("Blog güncelleme hatası:", err);
-    return NextResponse.json({ message: "Hata oluştu" }, { status: 500 });
+    return NextResponse.json({ message: "Güncelleme hatası" }, { status: 500 });
   }
 }
 
-// SİLME (DELETE)
-export async function DELETE(_req: NextRequest, { params }: { params: { id: string } }) {
+/* ----------------------------- UPDATE ----------------------------- */
+// PUT → tam güncelleme
+export async function PUT(
+  req: NextRequest,
+  context: { params: { id: string } }
+) {
+  return updatePost(req, context.params);
+}
+
+// PATCH → kısmi güncelleme 
+export async function PATCH(
+  req: NextRequest,
+  context: { params: { id: string } }
+) {
+  return updatePost(req, context.params);
+}
+
+/* ----------------------------- DELETE ----------------------------- */
+export async function DELETE(
+  _req: NextRequest,
+  { params }: { params: { id: string } }
+) {
   await connectToDB();
 
   try {

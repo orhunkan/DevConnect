@@ -7,6 +7,7 @@ import Link from "next/link";
 import { Session } from "next-auth";
 import DeleteButton from "./DeleteButton";
 import LikeButton from "./LikeButton";
+import CommentSection from "./CommentSection";
 import { BlogPost } from "@/types/post";
 import { Pencil, Trash2 } from "lucide-react";
 
@@ -20,15 +21,17 @@ export default function PostDetail({
   isLikedByMe: boolean;
 }) {
   const isOwner = session?.user?.email === post.authorEmail;
-  const postId = typeof post._id === "object" ? post._id.toString() : post._id;
+  const postId =
+    typeof post._id === "object" ? post._id.toString() : post._id;
 
   return (
-    <div className="max-w-2xl mx-auto py-10 px-6 text-black bg-gray-100 rounded-xl shadow-md space-y-6">
+  <div className="max-w-2xl mx-auto py-10 px-6 text-black bg-gray-100 rounded-xl shadow-md space-y-6 mb-20">
+      {/* -------- Başlık / meta -------- */}
       <div>
         <h1 className="text-3xl font-bold mb-2">{post.title}</h1>
 
         <div className="text-sm text-zinc-500 mb-2">
-          {new Date(post.createdAt).toLocaleDateString("tr-TR")} -{" "}
+          {new Date(post.createdAt).toLocaleDateString("tr-TR")} –{" "}
           {post.tags.join(", ")}
         </div>
 
@@ -51,6 +54,7 @@ export default function PostDetail({
         </p>
       </div>
 
+      {/* -------- İçerik (Markdown) -------- */}
       <div className="prose prose-invert max-w-none">
         <ReactMarkdown
           remarkPlugins={[remarkGfm]}
@@ -60,6 +64,7 @@ export default function PostDetail({
         </ReactMarkdown>
       </div>
 
+      {/* -------- Like -------- */}
       {session?.user && (
         <LikeButton
           postId={postId}
@@ -68,8 +73,9 @@ export default function PostDetail({
         />
       )}
 
+      {/* -------- Owner aksiyonları -------- */}
       {isOwner && (
-        <div className="flex gap-4 mt-4">
+        <div className="flex gap-4">
           <Link
             href={`/blog/${postId}/edit`}
             className="flex items-center gap-1 text-blue-500 hover:text-blue-600 text-sm"
@@ -84,6 +90,9 @@ export default function PostDetail({
           </div>
         </div>
       )}
+
+      {/* -------- Yorumlar -------- */}
+    <CommentSection postId={postId} userEmail={session?.user?.email ?? undefined} />
     </div>
   );
 }

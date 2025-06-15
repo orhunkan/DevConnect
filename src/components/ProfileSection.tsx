@@ -96,7 +96,7 @@ export default function ProfileSection({
       {/* Blog Postlar */}
       {posts.length > 0 && (
         <div>
-          <h3 className="text-xl font-bold text-center mb-6">Yazdığın Postlar</h3>
+          <h3 className="text-xl font-bold text-center mb-6">Your posts</h3>
           <div className="space-y-4">
             {posts.map((post) => (
               <PostCard

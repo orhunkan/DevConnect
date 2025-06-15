@@ -1,9 +1,8 @@
-// src/components/Navbar.tsx
 "use client";
 
 import Link from "next/link";
 import { useSession } from "next-auth/react";
-import Image from "next/image";
+import ProfileDropdown from "./ProfileDropdown";
 
 export default function Navbar() {
   const { data: session } = useSession();
@@ -11,39 +10,34 @@ export default function Navbar() {
   return (
     <header className="w-full bg-blue-500 text-white shadow-md">
       <div className="max-w-6xl mx-auto px-4 py-3 flex items-center justify-between">
-        {/* Sol: Logo boş kutu tutucu (gerekirse logoyu koyarız) */}
+        {/* sol logo */}
         <div className="w-[100px]">
           <Link href="/" className="text-xl font-bold">
             DevConnect
           </Link>
         </div>
 
-        {/* Orta: Menü Linkleri */}
+        {/* orta menü */}
         <nav className="flex gap-6 items-center justify-center">
-          {/* <Link href="/" className="hover:underline">Anasayfa</Link> */}
-          <Link href="/blog/new" className="hover:underline">Create Post </Link>
-          <Link href="/blog/" className="hover:underline">Posts</Link>
-          <Link href="" className="hover:underline">Explore</Link>
+          <Link href="/blog/new" className="hover:underline">
+            Create Post
+          </Link>
+          <Link href="/blog/" className="hover:underline">
+            Posts
+          </Link>
         </nav>
 
-        {/* Sağ: Kullanıcı bilgisi */}
-        <div className="w-[200px] flex justify-end items-center gap-2">
+        {/* sağ taraf */}
+        <div className="w-[200px] flex justify-end items-center">
           {session?.user ? (
-            <>
-              <Image
-                src={session.user.image || "/default-avatar.png"}
-                alt="profil"
-                width={32}
-                height={32}
-                className="rounded-full"
-              />
-              <div className="text-sm leading-tight hidden sm:block">
-                <p className="font-semibold">{session.user.name}</p>
-                <p className="text-xs text-zinc-200">{session.user.email}</p>
-              </div>
-            </>
+            <ProfileDropdown
+              username={session.user.name || session.user.email!.split("@")[0]}
+              avatar={session.user.image ?? null}
+            />
           ) : (
-            <Link href="/api/auth/signin">Giriş Yap</Link>
+            <Link href="/api/auth/signin" className="hover:underline">
+              Sign In
+            </Link>
           )}
         </div>
       </div>

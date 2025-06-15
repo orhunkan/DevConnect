@@ -15,7 +15,7 @@ export default function DeleteButton({ id }: { id: string }) {
       onClick={handleDelete}
       className="text-sm text-red-400 hover:underline"
     >
-      Yazıyı Sil
+      Delete Post
     </button>
   );
 }
